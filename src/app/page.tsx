@@ -22,8 +22,11 @@ export default function Home() {
               <Link href="/community">
                 <Button variant="ghost">Community</Button>
               </Link>
-              <Link href="/admin">
-                <Button variant="outline">Admin</Button>
+              <Link href="/dashboard">
+                <Button variant="ghost">Dashboard</Button>
+              </Link>
+              <Link href="/auth/login">
+                <Button variant="outline">Login</Button>
               </Link>
             </div>
           </div>
