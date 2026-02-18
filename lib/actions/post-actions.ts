@@ -32,8 +32,8 @@ export async function getPosts(filters?: PostFilters) {
     }
 
     const orderBy = filters?.sortBy === 'oldest' 
-      ? { createdAt: 'asc' } 
-      : { createdAt: 'desc' }
+      ? { createdAt: 'asc' as const } 
+      : { createdAt: 'desc' as const }
 
     const posts = await prisma.post.findMany({
       where,
