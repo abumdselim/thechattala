@@ -59,7 +59,7 @@ export function ImageUpload({
     }
   }
 
-  const handleFiles = async (files: FileList | null) => {
+  const handleFiles = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return
 
     const remainingSlots = maxImages - value.length
@@ -80,7 +80,7 @@ export function ImageUpload({
     }
 
     setUploading(false)
-  }
+  }, [value, maxImages, onChange])
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -100,7 +100,7 @@ export function ImageUpload({
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFiles(e.dataTransfer.files)
     }
-  }, [value, maxImages])
+  }, [handleFiles])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
