@@ -168,7 +168,7 @@ export default async function DashboardPage() {
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <p className="text-sm text-gray-600">
-                        ${product.price.toFixed(2)}
+                        ৳{product.price.toFixed(2)}
                       </p>
                       <StatusBadge status={product.status} />
                     </div>

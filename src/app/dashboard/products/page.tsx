@@ -86,7 +86,7 @@ export default async function ProductsPage() {
                   {product.title}
                 </h3>
                 <p className="text-sm text-gray-600 mt-1">
-                  ${product.price.toFixed(2)}
+                  ৳{product.price.toFixed(2)}
                 </p>
                 <div className="flex items-center gap-2 mt-2">
                   <StatusBadge status={product.status} />
@@ -165,7 +165,7 @@ export default async function ProductsPage() {
                 </TableCell>
                 <TableCell>
                   <span className="font-medium">
-                    ${product.price.toFixed(2)}
+                    ৳{product.price.toFixed(2)}
                   </span>
                 </TableCell>
                 <TableCell>
