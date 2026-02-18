@@ -216,9 +216,6 @@ export async function getUserProducts() {
     orderBy: { createdAt: 'desc' },
     include: {
       category: true,
-      _count: {
-        select: { seller: false },
-      },
     },
   })
 
