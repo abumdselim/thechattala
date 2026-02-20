@@ -1,4 +1,4 @@
-# TheChattala - চট্টলার হাইপারলোকাল প্ল্যাটফর্ম
+# TheChattala - A dedicated Communication and Problem solving Platform for Chattogram
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
