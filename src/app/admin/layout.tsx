@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+import { requireAdmin } from '@/lib/auth'
 import { LayoutDashboard, Users, Package, MessageSquare, Settings } from 'lucide-react'
 import Link from 'next/link'
 
@@ -9,11 +11,20 @@ const navigation = [
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // Verify the user is an authenticated admin who is not suspended (DB check).
+  // Runs on Node runtime (server component), not Edge.
+  try {
+    await requireAdmin()
+  } catch (error) {
+    console.error('Admin access denied:', error)
+    redirect('/')
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
