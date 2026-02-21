@@ -1,5 +1,7 @@
 import { LayoutDashboard, Users, Package, MessageSquare, Settings } from 'lucide-react'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { requireAdmin } from '@/lib/auth'
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -9,11 +11,18 @@ const navigation = [
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  try {
+    await requireAdmin()
+  } catch (error) {
+    console.error('Admin access check failed:', error)
+    redirect('/')
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">

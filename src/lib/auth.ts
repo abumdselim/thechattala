@@ -26,7 +26,7 @@ export async function requireAuth() {
 
 export async function requireAdmin() {
   const user = await requireAuth()
-  if (user.role !== 'ADMIN') {
+  if (user.role !== 'ADMIN' || user.suspended) {
     throw new Error('Admin access required')
   }
   return user
