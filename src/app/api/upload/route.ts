@@ -3,6 +3,7 @@ import { uploadToCloudinary } from '@/lib/cloudinary'
 import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export async function POST(request: NextRequest) {
   try {

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPost } from '@/app/actions/posts'
 import { getCurrentUser } from '@/lib/auth'
 
+export const runtime = 'nodejs'
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
