@@ -1,3 +1,7 @@
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { prisma } from '@/lib/prisma'
 import { LayoutDashboard, Users, Package, MessageSquare, Settings } from 'lucide-react'
 import Link from 'next/link'
 
@@ -9,11 +13,55 @@ const navigation = [
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const cookieStore = await cookies()
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        // Cookie setting is intentionally a no-op in server components;
+        // cookies can only be set in Server Actions or Route Handlers.
+        setAll() {},
+      },
+    }
+  )
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/auth/login')
+  }
+
+  if (!user.email) {
+    redirect('/')
+  }
+
+  // Check if user is admin
+  try {
+    const dbUser = await prisma.user.findUnique({
+      where: { email: user.email },
+      select: { role: true, suspended: true },
+    })
+
+    if (!dbUser || dbUser.role !== 'ADMIN' || dbUser.suspended) {
+      redirect('/')
+    }
+  } catch (error) {
+    console.error('Admin layout error:', error)
+    redirect('/')
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
