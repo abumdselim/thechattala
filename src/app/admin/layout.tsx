@@ -1,9 +1,9 @@
-import { createClient } from 'src/lib/supabase/server';
-import { prisma } from 'src/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
+import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 
-const Layout = async ({ children }) => {
-  const { user } = await createClient();
+const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const { data: { user } } = await (await createClient()).auth.getUser();
 
   if (!user) {
     redirect('/auth/login');
