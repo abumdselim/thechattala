@@ -1,6 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { prisma } from './src/lib/prisma'
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -36,21 +35,6 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
       return NextResponse.redirect(new URL('/auth/login', request.url))
-    }
-
-    // Check if user is admin
-    try {
-      const dbUser = await prisma.user.findUnique({
-        where: { email: user.email! },
-        select: { role: true, suspended: true }
-      })
-
-      if (!dbUser || dbUser.role !== 'ADMIN' || dbUser.suspended) {
-        return NextResponse.redirect(new URL('/', request.url))
-      }
-    } catch (error) {
-      console.error('Middleware error:', error)
-      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 
