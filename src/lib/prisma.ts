@@ -22,6 +22,13 @@ function createPrismaClient() {
   return new PrismaClient({ adapter })
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient()
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+// Lazily initialize the Prisma client on first access so that importing this
+// module during the Next.js build (without a DATABASE_URL) does not throw.
+export const prisma: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_, prop: string | symbol) {
+    if (!globalForPrisma.prisma) {
+      globalForPrisma.prisma = createPrismaClient()
+    }
+    return (globalForPrisma.prisma as unknown as Record<string | symbol, unknown>)[prop]
+  },
+})
